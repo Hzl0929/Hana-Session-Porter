@@ -1,0 +1,8 @@
+{
+  "id": "session-porter",
+  "name": "Session Porter",
+  "version": "0.1.0",
+  "description": "在会话中用斜杠命令导出当前会话为 JSON / Markdown / HTML，文件保存到本地目录。",
+  "trust": "full-access",
+  "capabilities": []
+}
