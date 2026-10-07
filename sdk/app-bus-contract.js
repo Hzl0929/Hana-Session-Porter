@@ -42,6 +42,7 @@ export const APP_BUS_REQUEST_ALLOWLIST = Object.freeze([
     "media:generate",
     "media:generate-image",
     "media:generate-video",
+    "media:generate-speech",
     "media:transcribe-audio",
     "provider:media-providers",
     "render:html-to-pdf",

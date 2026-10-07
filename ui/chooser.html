@@ -1,0 +1,39 @@
+<!DOCTYPE html>
+<html lang="zh-CN">
+<head>
+  <meta charset="utf-8">
+  <meta name="viewport" content="width=device-width, initial-scale=1">
+  <title>导出会话</title>
+  <link rel="stylesheet" href="./assets/chooser.css">
+</head>
+<body>
+  <main>
+    <header>
+      <div class="titles">
+        <h1>导出会话</h1>
+        <p id="subtitle" class="subtitle">选择导出格式</p>
+      </div>
+      <button type="button" id="close" class="close" aria-label="关闭" title="关闭（Esc）">✕</button>
+    </header>
+
+    <div class="options" role="group" aria-label="导出格式">
+      <button type="button" class="option" data-format="markdown">
+        <span class="option-title">Markdown</span>
+        <span class="option-desc">人类可读，思考过程折叠，适合阅读与整理</span>
+      </button>
+      <button type="button" class="option" data-format="html">
+        <span class="option-title">HTML</span>
+        <span class="option-desc">单文件自包含，断网可开，可打印存 PDF</span>
+      </button>
+      <button type="button" class="option" data-format="json">
+        <span class="option-title">JSON</span>
+        <span class="option-desc">清洗后的消息结构，便于二次处理</span>
+      </button>
+    </div>
+
+    <p id="status" class="status" role="status"></p>
+  </main>
+
+  <script type="module" src="./assets/chooser.js"></script>
+</body>
+</html>

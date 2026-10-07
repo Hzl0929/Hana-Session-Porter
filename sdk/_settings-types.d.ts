@@ -87,6 +87,12 @@ export interface ToggleProps {
 export interface NumberInputProps {
     value: number | null;
     onChange: (value: number) => void;
+    /**
+     * Called instead of onChange when the user submits an empty value; the consumer
+     * decides what clearing means (for example dropping an override so the default
+     * applies). Takes precedence over emptyValue when both are provided.
+     */
+    onClear?: () => void;
     unit?: string;
     unitPlacement?: 'outside' | 'inside';
     commitOnBlur?: boolean;

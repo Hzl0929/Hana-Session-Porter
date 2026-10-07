@@ -2,38 +2,25 @@
   "manifestVersion": 2,
   "id": "session-porter",
   "name": "Session Porter",
-  "version": "0.2.1",
+  "version": "0.3.1",
+  "description": "在会话列表里右键任意会话，导出为 JSON / Markdown / HTML。",
   "entry": "index.js",
   "icon": "assets/icon.svg",
-  "minAppVersion": "0.1050.9",
+  "minAppVersion": "1.0.0-beta",
   "capabilities": [
     "app/resources.read",
     "app/resources.write",
-    "app/notifications.show"
+    "app/notifications.show",
+    "app/windows.manage"
   ],
   "contributes": {
     "ui": {
       "contextMenus": [
         {
-          "id": "export-json",
-          "title": "导出会话 · JSON",
+          "id": "export-session",
+          "title": "导出会话",
           "surface": "hana/session.contextMenu",
-          "toolName": "session_porter_export",
-          "args": { "format": "json" }
-        },
-        {
-          "id": "export-markdown",
-          "title": "导出会话 · Markdown",
-          "surface": "hana/session.contextMenu",
-          "toolName": "session_porter_export",
-          "args": { "format": "markdown" }
-        },
-        {
-          "id": "export-html",
-          "title": "导出会话 · HTML",
-          "surface": "hana/session.contextMenu",
-          "toolName": "session_porter_export",
-          "args": { "format": "html" }
+          "toolName": "session_porter_export"
         }
       ]
     }

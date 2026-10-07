@@ -69,6 +69,15 @@ export interface AppHostChatOptions {
     };
     /** Finite action slots; the host renders no toolbar when absent. */
     readonly toolbar?: readonly AppHostChatToolbarAction[];
+    /**
+     * Transcript view for this one host Chat surface. `serene` folds each turn's
+     * process behind a single line; `classic` keeps every step in place. Absent
+     * keeps whatever view the host's own user preference already selects, which
+     * is `serene` for a fresh profile. The host renders this surface with the
+     * named view and never persists it, so it changes no other surface and no
+     * stored preference.
+     */
+    readonly viewMode?: "classic" | "serene";
 }
 export type AppHostSurfaceOpen = {
     readonly callToken?: string;
