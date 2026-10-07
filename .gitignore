@@ -1,0 +1,26 @@
+# 构建产物（pack_app.mjs 的 --out 目标）
+_build/
+dist/
+*.zip
+
+# 依赖（本 App 运行时不自带 node_modules；只有本地跑脚本时才会出现）
+node_modules/
+
+# 编辑器 / IDE
+.vscode/
+.idea/
+*.swp
+*~
+
+# 操作系统
+.DS_Store
+Thumbs.db
+desktop.ini
+
+# 日志与本地临时文件
+*.log
+*.tmp
+
+# 注意：下面这些是**故意提交**的，别加进来
+#   session-porter/sdk/            随包内嵌的官方 App SDK（运行时 import 它）
+#   session-porter/ui/assets/sdk.js 浏览器侧 App SDK（窗口页面 import 它）
