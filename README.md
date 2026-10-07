@@ -7,7 +7,7 @@
 
 - 形态：Hana v2 App（`manifestVersion: 2`）。
 - 兼容：面向 **Hana 1.0.0-beta**（`minAppVersion: 1.0.0-beta`）。
-- 当前版本：**0.3.1**（见 [`CHANGELOG.md`](CHANGELOG.md)）。
+- 当前版本：**0.3.2**（见 [`CHANGELOG.md`](CHANGELOG.md)）。
 
 ## 特性
 

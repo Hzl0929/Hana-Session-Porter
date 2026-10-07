@@ -3,6 +3,15 @@
 本项目遵循 [语义化版本](https://semver.org/lang/zh-CN/)。Hana v2 App 的版本号写在
 `session-porter/manifest.json` 的 `version`。
 
+## 0.3.2
+
+市场投稿版。应用代码与 0.3.1 一致，改的是出包方式和版本号。
+
+- 改用官方打包器（`scripts/extension-pack.mjs`）出包，随包提供
+  `app-session-porter-0.3.2.entry.json`，作为 Hana Global 市场的投稿物。
+- 0.3.1 那个 Release 附件是手工压的 zip，容器格式与官方打包器产物不同，
+  没法配一份合规的条目文件，因此按市场要求「不替换已发布版本的安装包」，改为抬版本重新发布。
+
 ## 0.3.1
 
 - 选择窗口右上角加 **✕**，并支持 **Esc** 关窗。
