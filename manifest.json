@@ -1,8 +1,41 @@
 {
+  "manifestVersion": 2,
   "id": "session-porter",
   "name": "Session Porter",
-  "version": "0.1.0",
-  "description": "在会话中用斜杠命令导出当前会话为 JSON / Markdown / HTML，文件保存到本地目录。",
-  "trust": "full-access",
-  "capabilities": []
+  "version": "0.2.1",
+  "entry": "index.js",
+  "icon": "assets/icon.svg",
+  "minAppVersion": "0.1050.9",
+  "capabilities": [
+    "app/resources.read",
+    "app/resources.write",
+    "app/notifications.show"
+  ],
+  "contributes": {
+    "ui": {
+      "contextMenus": [
+        {
+          "id": "export-json",
+          "title": "导出会话 · JSON",
+          "surface": "hana/session.contextMenu",
+          "toolName": "session_porter_export",
+          "args": { "format": "json" }
+        },
+        {
+          "id": "export-markdown",
+          "title": "导出会话 · Markdown",
+          "surface": "hana/session.contextMenu",
+          "toolName": "session_porter_export",
+          "args": { "format": "markdown" }
+        },
+        {
+          "id": "export-html",
+          "title": "导出会话 · HTML",
+          "surface": "hana/session.contextMenu",
+          "toolName": "session_porter_export",
+          "args": { "format": "html" }
+        }
+      ]
+    }
+  }
 }
