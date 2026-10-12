@@ -198,10 +198,12 @@ async function exportSession(sdk, sessionPath, format, stampMs) {
 
   const content = FORMATS[format].render({ meta, messages, events, mode: "clean" });
 
-  const uuid = sessionId || path.basename(sessionPath).replace(/\.jsonl$/i, "");
+  // 文件名不再带会话 UUID：`<会话名>_<秒级时间戳>.<ext>` 足够定位。
+  // 会话身份在内容（JSON 的 meta、MD/HTML 的头部）里保留；
+  // 同一会话同一秒撞名的概率可忽略，真撞上了也只是覆盖同一次导出。
   const slug = safeSlug(title);
   const stamp = fileStamp(Number.isFinite(stampMs) ? stampMs : Date.now());
-  const fileName = [slug || "session", stamp, uuid].join("_") + "." + FORMATS[format].ext;
+  const fileName = [slug || "session", stamp].join("_") + "." + FORMATS[format].ext;
   const outPath = path.join(hanaHomeFrom(sdk.dataDir), EXPORT_DIR, fileName);
 
   const finalPath = await writeExport(sdk, outPath, content);

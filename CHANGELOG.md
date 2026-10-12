@@ -3,6 +3,15 @@
 本项目遵循 [语义化版本](https://semver.org/lang/zh-CN/)。Hana v2 App 的版本号写在
 `session-porter/manifest.json` 的 `version`。
 
+## 0.3.4
+
+导出文件名去掉会话 UUID。
+
+- 文件名从 `<会话名>_<时间戳>_<会话UUID>.<ext>` 改为 `<会话名>_<时间戳>.<ext>`。
+  时间戳本就精确到秒，同一会话同一秒撞名的概率可忽略，长尾 UUID 只是让名字碍眼。
+- 会话身份没有丢：JSON 的 `meta.sessionId`、Markdown / HTML 头部的「会话 ID」仍完整给出。
+- 能力词无变化（仍为 0.3.3 的五项），更新安装不会触发重新审查。
+
 ## 0.3.3
 
 导出文件名优先用会话名。
