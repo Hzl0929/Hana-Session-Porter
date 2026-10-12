@@ -79,6 +79,9 @@ async function readLocalText(sdk, filePath) {
   return extractText(result);
 }
 
+// 兜底数据源：<HANA_HOME>/agents/<agent>/sessions/session-titles.json。
+// 它的 key 是宿主 sessionId（形如 sess_xxx），**不是** jsonl 头部的 UUID；
+// 拿错键查不到属于正常情况，调用方按兜底链继续往下走。
 async function readTitleFromTitles(sdk, sessionPath, sessionId) {
   if (!sessionId) return null;
   try {
@@ -91,7 +94,47 @@ async function readTitleFromTitles(sdk, sessionPath, sessionId) {
   }
 }
 
-function resolveTitle({ fromTitles, messages }) {
+// 同一条会话路径，在列表接口和 jsonl 之间可能差在斜杠方向与盘符大小写，归一后比较。
+function sameSessionPath(a, b) {
+  const norm = (p) =>
+    String(p ?? "")
+      .replace(/[\\/]+/g, "/")
+      .replace(/\/+$/g, "")
+      .toLowerCase();
+  const x = norm(a);
+  return !!x && x === norm(b);
+}
+
+// 经宿主会话列表（session:list）按路径找到被导出的那条会话。
+// 需要 app/sessions.read；被拒或宿主不支持时返回 null，调用方继续走兜底。
+async function findSessionInList(sdk, sessionPath) {
+  try {
+    const res = await sdk.sessions.list({ scope: "all", lifecycle: "all" });
+    const list = Array.isArray(res?.sessions) ? res.sessions : Array.isArray(res) ? res : [];
+    for (const e of list) {
+      if (e && (sameSessionPath(e.path, sessionPath) || sameSessionPath(e.legacySessionPath, sessionPath))) {
+        return e;
+      }
+    }
+  } catch (err) {
+    await sdk.logger.info(
+      `session-porter: session list lookup failed -> ${err?.code || ""} ${err?.message || err}`,
+    );
+  }
+  return null;
+}
+
+// 会话名来源，按可信度从高到低：
+// 1) 宿主会话列表的 title——就是侧栏显示的那个会话名；
+// 2) session-titles.json（先拿列表给出的宿主 sessionId 查，再拿 jsonl 头部 UUID 试一把）；
+// 3) 第一句用户消息首行；4) 常量「会话导出」。
+async function resolveSessionTitle(sdk, sessionPath, headerId, messages) {
+  const entry = await findSessionInList(sdk, sessionPath);
+  const listTitle = typeof entry?.title === "string" ? entry.title.trim() : "";
+  if (listTitle) return listTitle;
+  const fromTitles =
+    (await readTitleFromTitles(sdk, sessionPath, entry?.sessionId)) ||
+    (await readTitleFromTitles(sdk, sessionPath, headerId));
   if (fromTitles) return fromTitles;
   const firstUser = messages.find((m) => m.role === "user" && m.text);
   if (firstUser) return firstLine(firstUser.text, 40);
@@ -140,10 +183,7 @@ async function exportSession(sdk, sessionPath, format, stampMs) {
   const messages = extractConversation(events);
   const sessionId = typeof header?.id === "string" ? header.id : null;
 
-  const title = resolveTitle({
-    fromTitles: await readTitleFromTitles(sdk, sessionPath, sessionId),
-    messages,
-  });
+  const title = await resolveSessionTitle(sdk, sessionPath, sessionId, messages);
 
   const meta = {
     title,
@@ -242,10 +282,7 @@ async function openChooser(sdk, sessionPath, callToken) {
     const { events } = parseJsonl(raw);
     const header = getSessionHeader(events);
     const sessionId = typeof header?.id === "string" ? header.id : null;
-    title = resolveTitle({
-      fromTitles: await readTitleFromTitles(sdk, sessionPath, sessionId),
-      messages: extractConversation(events),
-    });
+    title = await resolveSessionTitle(sdk, sessionPath, sessionId, extractConversation(events));
   } catch {
     // 标题只是锦上添花，读不到就用默认。
   }

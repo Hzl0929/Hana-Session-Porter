@@ -3,6 +3,19 @@
 本项目遵循 [语义化版本](https://semver.org/lang/zh-CN/)。Hana v2 App 的版本号写在
 `session-porter/manifest.json` 的 `version`。
 
+## 0.3.3
+
+导出文件名优先用会话名。
+
+- 之前导出文件名几乎总是掉到“第一句用户消息”兜底：代码拿 jsonl 头部的 UUID 去查
+  `session-titles.json`，而那张表的 key 是宿主 sessionId（`sess_xxx` 形式），两边对不上，
+  查询从未命中。
+- 现在会话名按三级链路解析：宿主会话列表（`session:list`）里那条会话的 `title`（侧栏
+  显示什么就是什么）→ `session-titles.json`（改用正确的 key 查，两条键都试）→ 第一句
+  用户消息。选择窗口的标题栏同步受益。
+- 为此新增能力词 `app/sessions.read`（共五项），安装更新时需重新确认一次权限。
+  接口被拒或旧宿主不支持时自动降级到后两级，导出不受影响。
+
 ## 0.3.2
 
 市场投稿版。应用代码与 0.3.1 一致，改的是出包方式和版本号。

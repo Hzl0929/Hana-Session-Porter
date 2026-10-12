@@ -2,7 +2,7 @@
   "manifestVersion": 2,
   "id": "session-porter",
   "name": "Session Porter",
-  "version": "0.3.2",
+  "version": "0.3.3",
   "description": "在会话列表里右键任意会话，导出为 JSON / Markdown / HTML。",
   "entry": "index.js",
   "icon": "assets/icon.svg",
@@ -11,7 +11,8 @@
     "app/resources.read",
     "app/resources.write",
     "app/notifications.show",
-    "app/windows.manage"
+    "app/windows.manage",
+    "app/sessions.read"
   ],
   "contributes": {
     "ui": {
